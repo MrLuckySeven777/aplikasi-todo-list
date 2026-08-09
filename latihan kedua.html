@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Latihan Kedua Saya</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .kartu {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            display: inline-block;
+        }
+
+        input {
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 200px;
+        }
+
+        button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+    </head>
+    <body>
+        <div class="kartu">
+            <h1 id="pesan">Siapa nama Anda?</h1>
+            <input type="text" id="inputNama" placeholder="Ketik nama di sini...">
+            <br>
+            <button onclick="sapaUser()">Sapa Saya!</button>
+        </div>
+
+        <script>
+            function sapaUser() {
+                let namaUser = document.getElementById("inputNama").value;
+                
+                if (namaUser === "") {
+                    document.getElementById("pesan").innerHTML = "Hei, namanya jangan dikosongkan!";
+                } else {
+                    document.getElementById("pesan").innerHTML = "Halo," + namaUser + "! Anda luar biasa.";
+                }
+            }
+        </script>
+    </body>
+</html>

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Animated Portfolio</title>
+    <style>
+        /* === 1. SETUP & RESET === */
+        :root {
+            /* Warna awal saat pertama kali dimuat */
+            --bg-body: #e2e8f0; 
+            --text-main: #18181b;
+            --card-radius: 24px;
+            --elegant-transition: 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            /* Tambahan: Animasi transisi khusus untuk warna background */
+            transition: background-color 1s ease-in-out;
+        }
+
+        .portfolio-gallery {
+            position: relative;
+            width: 85vw;
+            max-width: 900px;
+            height: 60vh;
+            max-height: 550px;
+            perspective: 1000px; 
+        }
+
+        /* === 2. KARTU & ANIMASI SLIDE === */
+        .portfolio-card {
+            position: absolute;
+            inset: 0;
+            background: #ffffff;
+            border-radius: var(--card-radius);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            
+            /* Animasi geser kartu */
+            transition: transform var(--elegant-transition), opacity var(--elegant-transition);
+            will-change: transform, opacity;
+        }
+
+        /* Status: Aktif (Di Tengah) */
+        .portfolio-card[data-status="active"] {
+            transform: translateX(0) scale(1);
+            opacity: 1;
+            z-index: 10;
+        }
+
+        /* Status: Sebelumnya (Geser ke kiri & mengecil) */
+        .portfolio-card[data-status="before"] {
+            transform: translateX(-40%) scale(0.8);
+            opacity: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Status: Selanjutnya (Bersiap di kanan jauh) */
+        .portfolio-card[data-status="after"] {
+            transform: translateX(100%) scale(0.8);
+            opacity: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* === 3. ANIMASI TEKS (STAGGERED REVEAL) === */
+        .card-title { 
+            font-size: 2.5rem; 
+            font-weight: 700; 
+            margin-bottom: 0.5rem; 
+            letter-spacing: -0.02em; 
+        }
+        
+        .card-desc { 
+            font-size: 1.1rem; 
+            color: #71717a; 
+            max-width: 400px; 
+        }
+
+        /* Posisi awal teks (tersembunyi dan agak ke bawah) */
+        .card-title, .card-desc {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Teks meluncur naik saat kartu aktif */
+        .portfolio-card[data-status="active"] .card-title {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.2s; /* Jeda sedikit agar kartu masuk dulu */
+        }
+
+        .portfolio-card[data-status="active"] .card-desc {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.35s; /* Jeda lebih lama dari judul */
+        }
+
+        /* === 4. KONTROL === */
+        .controls {
+            margin-top: 2.5rem;
+            display: flex;
+            gap: 1rem;
+            z-index: 20;
+        }
+
+        button {
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 50px;
+            background: #18181b;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        button:hover { background: #3f3f46; }
+        button:active { transform: scale(0.95); }
+        button:disabled { background: #d4d4d8; cursor: not-allowed; transform: none; }
+    </style>
+</head>
+<body>
+
+    <div class="portfolio-gallery">
+        <!-- Perhatikan penambahan atribut data-bg untuk setiap kartu -->
+        <div class="portfolio-card" data-status="active" data-bg="#e2e8f0">
+            <h2 class="card-title">Fintech Dashboard</h2>
+            <p class="card-desc">Desain antarmuka minimalis untuk aplikasi perbankan digital.</p>
+        </div>
+        <div class="portfolio-card" data-status="after" data-bg="#ffedd5">
+            <h2 class="card-title">E-Commerce App</h2>
+            <p class="card-desc">Pengalaman belanja yang mulus dengan arsitektur microservices.</p>
+        </div>
+        <div class="portfolio-card" data-status="after" data-bg="#dcfce7">
+            <h2 class="card-title">Health Tracker</h2>
+            <p class="card-desc">Visualisasi data medis kompleks menjadi metrik yang mudah dipahami.</p>
+        </div>
+        <div class="portfolio-card" data-status="after" data-bg="#f3e8ff">
+            <h2 class="card-title">Smart Home IoT</h2>
+            <p class="card-desc">Sistem kontrol terpusat untuk perangkat rumah pintar masa depan.</p>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button id="btn-prev" disabled>Previous</button>
+        <button id="btn-next">Next</button>
+    </div>
+
+    <script>
+        const cards = document.querySelectorAll('.portfolio-card');
+        const btnPrev = document.getElementById('btn-prev');
+        const btnNext = document.getElementById('btn-next');
+        
+        let currentIndex = 0;
+
+        function updateGallery() {
+            cards.forEach((card, index) => {
+                if (index === currentIndex) {
+                    card.setAttribute('data-status', 'active');
+                    
+                    // FITUR BARU: Mengambil warna dari atribut data-bg dan menerapkannya ke body
+                    const newBgColor = card.getAttribute('data-bg');
+                    document.body.style.backgroundColor = newBgColor;
+
+                } else if (index < currentIndex) {
+                    card.setAttribute('data-status', 'before');
+                } else {
+                    card.setAttribute('data-status', 'after');
+                }
+            });
+
+            btnPrev.disabled = currentIndex === 0;
+            btnNext.disabled = currentIndex === cards.length - 1;
+        }
+
+        btnNext.addEventListener('click', () => {
+            if (currentIndex < cards.length - 1) {
+                currentIndex++;
+                updateGallery();
+            }
+        });
+
+        btnPrev.addEventListener('click', () => {
+            if (currentIndex > 0) {
+                currentIndex--;
+                updateGallery();
+            }
+        });
+
+        // Panggil saat pertama kali dimuat
+        updateGallery();
+    </script>
+</body>
+</html>
