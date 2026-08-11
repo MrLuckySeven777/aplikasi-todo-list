@@ -1,16 +1,20 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Penjelasan To-Do List</title>
+        <title>Daftar Tim Keren</title>
+        <link rel="stylesheet" href="style.css">
     </head>
     <body>
-        <input type="text" id="kotakKetikan">
-        <button onclick="jalankanPerintah()">Tambah</button>
-        <button onclick="resetSemua()" style="background-color: red; color: white;">Kosongkan Semua</button>
-        <hr>
-        <ul id="tempatTugas">
-            
-        </ul>
+        <h1>Daftar Anggota Tim</h1>
+        
+        <button onclick="muatTim()">Muat Anggota Tim</button>
+        
+        <br><br>
+
+        <input type="text" id="kotakCari" placeholder="Cari nama anggota..." oninput="saringData()">
+        
+        <div id="wadahPengguna" class="grid-container"></div>
+
         <script src="script.js"></script>
     </body>
 </html>
