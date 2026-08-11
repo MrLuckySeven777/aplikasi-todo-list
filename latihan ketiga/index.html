@@ -1,20 +1,30 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Daftar Tim Keren</title>
-        <link rel="stylesheet" href="style.css">
-    </head>
-    <body>
-        <h1>Daftar Anggota Tim</h1>
-        
-        <button onclick="muatTim()">Muat Anggota Tim</button>
-        
-        <br><br>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>BioskopKu - Katalog Film</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-        <input type="text" id="kotakCari" placeholder="Cari nama anggota..." oninput="saringData()">
-        
-        <div id="wadahPengguna" class="grid-container"></div>
+    <header>
+        <h1>🎬 BioskopKu</h1>
+        <p>Temukan serial TV dan film favoritmu secara real-time!</p>
 
-        <script src="script.js"></script>
-    </body>
+        <div class="search-box">
+
+            <input type="text" id="kotakCari" placeholder="Ketik judul film (cth: Batman, Naruto, Flash)..." oninput="cariFilm()">
+        </div>
+    </header>
+
+    <main>
+
+        <div id="statusTeks"></div>
+
+        <div id="wadahFilm" class="grid-film"></div>
+    </main>
+
+    <script src="script.js"></script>
+    
+</body>
 </html>
